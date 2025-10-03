@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkretht03pnt8"]
 
-[ext_resource type="Script" uid="uid://jfmbhbkviqve" path="res://RTS_Movement/Scripts/Player.gd" id="1_phr28"]
+[ext_resource type="Script" uid="uid://jfmbhbkviqve" path="res://RTS_Movement/Scripts/RTS_Player.gd" id="1_phr28"]
 [ext_resource type="Texture2D" uid="uid://b5tkwauv1qqkk" path="res://Global_Assets/ascii-transparent-bg.png" id="2_i4gpy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fdqs8"]
