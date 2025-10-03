@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5tkwauv1qqkk"
-path="res://.godot/imported/ascii-transparent-bg.png-707276a010fb777a5aaa958d221e9337.ctex"
+path="res://.godot/imported/ascii-transparent-bg.png-21062b78eb830f16f964f44a5ef88b4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ascii-transparent-bg.png"
-dest_files=["res://.godot/imported/ascii-transparent-bg.png-707276a010fb777a5aaa958d221e9337.ctex"]
+source_file="res://Global_Assets/ascii-transparent-bg.png"
+dest_files=["res://.godot/imported/ascii-transparent-bg.png-21062b78eb830f16f964f44a5ef88b4e.ctex"]
 
 [params]
 

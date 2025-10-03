@@ -1,17 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkretht03pnt8"]
 
-[ext_resource type="Script" uid="uid://jfmbhbkviqve" path="res://Scripts/Player.gd" id="1_fdqs8"]
-[ext_resource type="Texture2D" uid="uid://b5tkwauv1qqkk" path="res://Assets/ascii-transparent-bg.png" id="1_ydrf3"]
+[ext_resource type="Script" uid="uid://jfmbhbkviqve" path="res://RTS_Movement/Scripts/Player.gd" id="1_phr28"]
+[ext_resource type="Texture2D" uid="uid://b5tkwauv1qqkk" path="res://Global_Assets/ascii-transparent-bg.png" id="2_i4gpy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fdqs8"]
-atlas = ExtResource("1_ydrf3")
+atlas = ExtResource("2_i4gpy")
 region = Rect2(1.001606, 147.05103, 20.102062, 27.005798)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ydrf3"]
 radius = 12.0
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_fdqs8")
+script = ExtResource("1_phr28")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_fdqs8")

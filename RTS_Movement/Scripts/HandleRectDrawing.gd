@@ -1,4 +1,4 @@
-# Main
+# Handle Selection & Movement
 
 extends Node2D
 
@@ -7,8 +7,6 @@ var selected: Array = []
 var drag_start: Vector2 = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 
-# REMOVED: The signal is no longer needed.
-# signal move_command(target_position: Vector2)
 
 func handle_clear_selections() -> void:
 	for item in selected:
