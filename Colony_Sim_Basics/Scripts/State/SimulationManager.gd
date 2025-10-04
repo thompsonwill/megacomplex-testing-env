@@ -12,9 +12,10 @@ var job_queue: Array[Dictionary] = [{
 	#"cost": {ScrapMetal: 1} <-- however many resources it costs to do this 
 },{
 	"type": "Scavenging",
-	"location": Vector2i(686,80), # make sure you fill this in with the real zone
+	"location": Vector2i(220,409), # make sure you fill this in with the real zone
 	"duration": 10.0, # <-- add required work time (in seconds)
-	#"cost": {ScrapMetal: 1} <-- however many resources it costs to do this 
+	#"cost": null <-- however many resources it costs to do this 
+	#"reward": {} Is there a reward? How much will they *get* for scavenging? They can add this to their inventory
 }]
 ## End main game state variables
 
