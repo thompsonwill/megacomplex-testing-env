@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="Megacomplex-Testing-Env"
-run/main_scene="uid://jf3mgl7g0inm"
+run/main_scene="uid://dcqntuets8vqg"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SimulationManager="*res://Colony_Sim_Basics/Scripts/SimulationManager.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [global_group]
 

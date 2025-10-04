@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://bkwwic6jcwohs"]
+
+[ext_resource type="Script" uid="uid://txv5i8ywjmcq" path="res://Colony_Sim_Basics/Scripts/Colony_Citizen.gd" id="1_rrns0"]
+[ext_resource type="Texture2D" uid="uid://b5tkwauv1qqkk" path="res://Global_Assets/ascii-transparent-bg.png" id="2_k7kxi"]
+[ext_resource type="Texture2D" uid="uid://6t12amvywdfe" path="res://icon.svg" id="2_yy7u6"]
+[ext_resource type="Script" uid="uid://lswed050vdv8" path="res://Colony_Sim_Basics/Scripts/Col_Citizen_Data.gd" id="3_fwhen"]
+
+[sub_resource type="Resource" id="Resource_b5wea"]
+script = ExtResource("3_fwhen")
+name = "Jimmy John"
+bio = "I used to make sandwiches, now I live in the Megacomplex. "
+link_to_portrait = ExtResource("2_yy7u6")
+base_stats = {
+"intelligence": 10,
+"level": 1,
+"strength": 5
+}
+metadata/_custom_type_script = "uid://lswed050vdv8"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dobdd"]
+atlas = ExtResource("2_k7kxi")
+region = Rect2(0.9476509, 147.01596, 19.935928, 27.04271)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3qoa"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yy7u6"]
+
+[sub_resource type="Theme" id="Theme_yy7u6"]
+
+[node name="Citizen" type="CharacterBody2D" node_paths=PackedStringArray("mouse_collider", "info_window", "details_label", "citizen_portrait")]
+script = ExtResource("1_rrns0")
+attributes = SubResource("Resource_b5wea")
+mouse_collider = NodePath("MouseCollider")
+info_window = NodePath("Citizen_Info")
+details_label = NodePath("Citizen_Info/Citizen_Details")
+citizen_portrait = NodePath("Citizen_Info/Portrait")
+
+[node name="Citizen_Sprite" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_dobdd")
+
+[node name="Citizen_Collision_Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_a3qoa")
+
+[node name="MouseCollider" type="Area2D" parent="."]
+
+[node name="Mouse_Collision_Shape" type="CollisionShape2D" parent="MouseCollider"]
+shape = SubResource("CapsuleShape2D_yy7u6")
+
+[node name="Citizen_Info" type="Window" parent="."]
+oversampling_override = 1.0
+title = "Citizen Info"
+position = Vector2i(125, 36)
+size = Vector2i(500, 103)
+visible = false
+theme = SubResource("Theme_yy7u6")
+
+[node name="Citizen_Details" type="RichTextLabel" parent="Citizen_Info"]
+offset_left = 39.0
+offset_top = 2.0
+offset_right = 499.0
+offset_bottom = 94.0
+bbcode_enabled = true
+text = "Name
+Biography of the player
+Level"
+fit_content = true
+
+[node name="Portrait" type="Sprite2D" parent="Citizen_Info"]
+position = Vector2(18, 18)
+scale = Vector2(0.23999509, 0.24000368)
+
+[connection signal="input_event" from="MouseCollider" to="." method="_on_mouse_collider_input_event"]
+[connection signal="mouse_entered" from="MouseCollider" to="." method="_on_mouse_collider_mouse_entered"]
+[connection signal="mouse_exited" from="MouseCollider" to="." method="_on_mouse_collider_mouse_exited"]
+[connection signal="close_requested" from="Citizen_Info" to="." method="_on_citizen_info_close_requested"]
