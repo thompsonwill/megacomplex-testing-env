@@ -3,7 +3,11 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print("We are so in the colony baby")
+	#print("We are so in the colony baby")
+	#print(SimulationManager.global_oxygen_level)
+	#print(SimulationManager.power_output)
+	#print(SimulationManager.resource_inventory)
+	#print(SimulationManager.job_queue)
 	pass # Replace with function body.
 
 

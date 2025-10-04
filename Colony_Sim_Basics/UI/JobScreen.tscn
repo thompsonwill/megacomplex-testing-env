@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c46gwra83nau6"]
+
+[ext_resource type="Script" uid="uid://ckvciqstmvrre" path="res://Colony_Sim_Basics/Scripts/job_screen_script.gd" id="1_0t444"]
+
+[node name="JobScreen" type="Control" node_paths=PackedStringArray("jobs_list_component")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0t444")
+jobs_list_component = NodePath("Job_List_Container/Jobs_List")
+
+[node name="Job_List_Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 138.0
+grow_vertical = 2
+
+[node name="Jobs_List" type="ItemList" parent="Job_List_Container"]
+layout_mode = 2
+auto_width = true
+auto_height = true
+
+[connection signal="item_clicked" from="Job_List_Container/Jobs_List" to="." method="_on_jobs_list_item_clicked"]

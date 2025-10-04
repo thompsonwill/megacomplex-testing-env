@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=4 uid="uid://dcqntuets8vqg"]
+[gd_scene load_steps=5 format=4 uid="uid://dcqntuets8vqg"]
 
 [ext_resource type="TileSet" uid="uid://b3d4xj4b331dx" path="res://Global_Assets/ASCII_Tileset.tres" id="1_c8tbi"]
 [ext_resource type="Script" uid="uid://cp7n7vxbufsny" path="res://Colony_Sim_Basics/Scripts/colony_main_scene.gd" id="1_ygomo"]
 [ext_resource type="PackedScene" uid="uid://bkwwic6jcwohs" path="res://Colony_Sim_Basics/Characters/Colony_Citizen.tscn" id="2_1kxar"]
+[ext_resource type="PackedScene" uid="uid://c46gwra83nau6" path="res://Colony_Sim_Basics/UI/JobScreen.tscn" id="4_5nnic"]
 
 [node name="ColonySimMain" type="Node2D"]
 script = ExtResource("1_ygomo")
@@ -16,11 +17,22 @@ tile_map_data = PackedByteArray("AAABAAAAAAAEAAwAAAACAAAAAAAEAAwAAAADAAAAAAAEAAw
 tile_set = ExtResource("1_c8tbi")
 
 [node name="Citizen" parent="." instance=ExtResource("2_1kxar")]
-position = Vector2(138, 88)
+position = Vector2(1079, 593)
 
-[node name="Label" type="Label" parent="."]
-offset_left = 662.0
-offset_top = 14.0
-offset_right = 737.0
-offset_bottom = 37.0
+[node name="Zone_Label" type="Label" parent="."]
+offset_left = 657.0
+offset_top = 22.0
+offset_right = 732.0
+offset_bottom = 45.0
 text = "Test Zone"
+
+[node name="JobScreen" parent="." instance=ExtResource("4_5nnic")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_right = 0.0
+offset_left = 32.0
+offset_top = 61.0
+offset_right = 32.0
+offset_bottom = 61.0
+grow_horizontal = 1
+grow_vertical = 0

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://txv5i8ywjmcq" path="res://Colony_Sim_Basics/Scripts/Colony_Citizen.gd" id="1_rrns0"]
 [ext_resource type="Texture2D" uid="uid://b5tkwauv1qqkk" path="res://Global_Assets/ascii-transparent-bg.png" id="2_k7kxi"]
 [ext_resource type="Texture2D" uid="uid://6t12amvywdfe" path="res://icon.svg" id="2_yy7u6"]
-[ext_resource type="Script" uid="uid://lswed050vdv8" path="res://Colony_Sim_Basics/Scripts/Col_Citizen_Data.gd" id="3_fwhen"]
+[ext_resource type="Script" uid="uid://lswed050vdv8" path="res://Colony_Sim_Basics/Scripts/CitizenData.gd" id="3_fwhen"]
 
 [sub_resource type="Resource" id="Resource_b5wea"]
 script = ExtResource("3_fwhen")
