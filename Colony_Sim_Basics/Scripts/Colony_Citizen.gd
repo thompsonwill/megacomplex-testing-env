@@ -19,7 +19,7 @@ var full_profile: String
 # End player UI variables
 
 ## Player State Variables
-var inventory: Array[Dictionary] = [{}]
+var inventory: Array
 var current_job: Dictionary = {}
 var job_progress: float = 0.0 # Time spent on current task
 var health: int = 100
@@ -38,12 +38,19 @@ func find_entry_by_id(array, target_id):
 func _claim_new_job(job_data) -> void:
 	print("Pritning from Colony_Citizen.gd")
 	print(job_data)
-	
-	#var entry = find_entry_by_id(SimulationManager.job_queue, job_data["id"])
-	#var job_status = SimulationManager.get_status_name(job_data["status"])
-	#print("joberino status ", job_status)
-	#
-	#print('entry', entry)
+	if job_data.cost:
+		print("There is a cost to this job, do we have the resource in our inventory?")
+		print(SimulationManager.ResourceType.keys()[job_data.cost.resource]) # What material type?
+		
+		# Check if we have the resources required in our inventory
+		# If yes, proceed to do the work
+		# If no, find a stockpile that has the resource
+		
+		if inventory.size() == 0:
+			# There is no inventory, we do not have enough of anything.
+			# If the inventory is empty, we should locate these resources
+			print("You poor, there's nothing here.")
+
 	if is_working:
 		print("This guy is already working")
 		return

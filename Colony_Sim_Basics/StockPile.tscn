@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=4 uid="uid://dlr4dx0r0ae5l"]
+
+[ext_resource type="Script" uid="uid://b8rk887qlas4m" path="res://Colony_Sim_Basics/Scripts/StockPile.gd" id="1_6jfb0"]
+[ext_resource type="TileSet" uid="uid://b3d4xj4b331dx" path="res://Global_Assets/ASCII_Tileset.tres" id="1_ahb3n"]
+
+[node name="StockPile" type="Node2D" node_paths=PackedStringArray("inventory_label")]
+script = ExtResource("1_6jfb0")
+inventory_label = NodePath("Inventory_Label")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAABAAAAAAANAAwAAAACAAAAAAANAAwAAAADAAAAAAANAAwAAAAEAAAAAAANAAwAAAAFAAAAAAANAAwAAAAGAAAAAAANAAwAAAAHAAAAAAANAAwAAAAIAAAAAAANAAwAAAAJAAAAAAANAAwAAAAKAAAAAAANAAwAAAALAAAAAAANAAwAAAAMAAAAAAANAAwAAAANAAAAAAANAAwAAAAOAAAAAAAIAAsAAAAAAAAAAAAFAA0AAAAAAAEAAAADAAsAAAAAAAIAAAADAAsAAAAAAAMAAAADAAsAAAAAAAQAAAADAAsAAAAAAAUAAAADAAsAAAAOAAEAAAADAAsAAAAOAAIAAAADAAsAAAAOAAMAAAADAAsAAAAOAAQAAAADAAsAAAAOAAUAAAADAAsAAAA=")
+tile_set = ExtResource("1_ahb3n")
+
+[node name="Stockpile_Label" type="Label" parent="."]
+offset_left = 125.0
+offset_top = 33.0
+offset_right = 209.0
+offset_bottom = 56.0
+text = "STOCKPILE"
+
+[node name="Inventory_Label" type="Label" parent="."]
+offset_left = 21.0
+offset_top = 57.0
+offset_right = 337.0
+offset_bottom = 215.0
+text = "inventory"
