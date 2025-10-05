@@ -10,40 +10,57 @@ const JUMP_VELOCITY = -400.0
 @export var details_label: RichTextLabel
 @export var citizen_portrait: Sprite2D
 
+
+# Player UI Info Variables
+var citizen_name: String
+var bio: String
+var level: int
+var full_profile: String
+# End player UI variables
+
 ## Player State Variables
-var inventory: Dictionary = {}
+var inventory: Array[Dictionary] = [{}]
 var current_job: Dictionary = {}
-var health: int = 100
 var job_progress: float = 0.0 # Time spent on current task
+var health: int = 100
 var is_working: bool = false
 var target_position
 var STOPPING_DISTANCE: int = 25
 ## End player state vars
 
+func find_entry_by_id(array, target_id):
+	for entry in array:
+		if entry.has("id") and entry["id"] == target_id:
+			return entry
+		return null # Return null if no entry with the target_id is found
+
 # Function to let NPC claim a job
 func _claim_new_job(job_data) -> void:
-
+	print("Pritning from Colony_Citizen.gd")
+	print(job_data)
+	
+	#var entry = find_entry_by_id(SimulationManager.job_queue, job_data["id"])
+	#var job_status = SimulationManager.get_status_name(job_data["status"])
+	#print("joberino status ", job_status)
+	#
+	#print('entry', entry)
+	if is_working:
+		print("This guy is already working")
+		return
 	current_job = job_data
 	is_working = false # make sure we stop working when we move to the job location
 	target_position = job_data.location
-	
-	# This is ugly, make this better
-	var citizen_name = attributes.name
-	var bio = attributes.bio
-	var level = attributes.base_stats["level"]
-	var full_profile = str("[b]", citizen_name, "[/b]", "\n", bio, "\n","Job: ", current_job['name'], "\n", "Level: ", level)
-	details_label.text = full_profile
-	# Just wrapping this shitty code in comments to remember to update it later
+
 
 
 	pass
 
 func _ready() -> void:
 	SimulationManager.job_selected.connect(_claim_new_job)
-	var citizen_name = attributes.name
-	var bio = attributes.bio
-	var level = attributes.base_stats["level"]
-	var full_profile = str("[b]", citizen_name, "[/b]", "\n", bio, "\n",current_job, "\n", "Level: ", level)
+	citizen_name = attributes.name
+	bio = attributes.bio
+	level = attributes.base_stats["level"]
+	full_profile = str("[b]", citizen_name, "[/b]", "\n", bio, "\n",current_job, "\n", "Level: ", level)
 	details_label.text = full_profile
 	
 	var portrait = attributes.link_to_portrait
@@ -53,13 +70,18 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	## Start moving
 	if is_working:
+		var job_state_to_update = SimulationManager.get_job_by_id(current_job.id)
 		job_progress += delta # ticking away the seconds for the job to be done
-		print("working working")
+		job_state_to_update.status = SimulationManager.JobStatus['IN_PROGRESS']
+		job_state_to_update.progress = job_progress
+		print(job_progress / current_job.duration)
 		
 		if job_progress >= current_job.duration:
 			print('Job done!')
 			is_working = false # Finish job
-			SimulationManager.job_completed.emit(current_job.index)
+			SimulationManager.job_completed.emit(current_job.id)
+			job_progress = 0
+			current_job = {}
 	
 	
 	if target_position != null:

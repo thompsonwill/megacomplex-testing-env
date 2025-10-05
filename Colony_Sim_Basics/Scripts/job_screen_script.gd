@@ -20,13 +20,13 @@ func _ready() -> void:
 	jobs_list = SimulationManager.job_queue
 	var loop_index = 0
 	for job in jobs_list:
-		var job_type = job.type
-		var job_location = job.location
-		var job_duration = job.duration
+		var job_type_int = job.type # enum stores the job type as an integer, we need to get the name
+		var job_type = SimulationManager.JobType.keys()[job_type_int]
+
 		jobs_list_component.add_item(job_type, null, true)
-		jobs_list_component.set_item_metadata(loop_index, {"location": job_location, "duration": job_duration})
+		jobs_list_component.set_item_metadata(loop_index, {"job_id": job.id})
 		loop_index += 1
-	SimulationManager.job_completed.connect(_populate_list)
+	#SimulationManager.job_completed.connect(_populate_list)
 	pass # Replace with function body.
 
 
@@ -36,10 +36,18 @@ func _process(delta: float) -> void:
 
 
 func _on_jobs_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
-	var job_data = jobs_list_component.get_item_metadata(index)
+	
 	var job_name = jobs_list_component.get_item_text(index)
-	job_data['name'] = job_name
-	job_data['index'] = index
-	SimulationManager.job_selected.emit(job_data)
+	var job_metadata = jobs_list_component.get_item_metadata(index)
+	var job = SimulationManager.get_job_by_id(job_metadata.job_id) # This is the direct job entry from Simulation Manager
+	
+	if job.status == SimulationManager.JobStatus['AVAILABLE']: # Need to work in a way to check if our npc is already working
+		print("Job is available, npc is claiming")
+		job.status = SimulationManager.JobStatus['CLAIMED'] # Let's see if this actually claims the job
+		SimulationManager.job_selected.emit(job)
+	
+	#job_data['name'] = job_name
+	#job_data['index'] = index
+	#SimulationManager.job_selected.emit(job_data)
 	#print(job_metadata)
 	pass # Replace with function body.

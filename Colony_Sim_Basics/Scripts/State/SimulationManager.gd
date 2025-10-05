@@ -5,19 +5,31 @@ var global_oxygen_level: int = 100 # max 100, min 0 (that means we dead)
 var power_output: int = 10 #kw? whats a lot or a little? Who cares for now
 var resource_inventory: Dictionary = {} # ScrapMetal, WiringSpools, ProcessedData, etc. 
 
+# Job Queue Enums
+enum JobStatus {AVAILABLE, CLAIMED, IN_PROGRESS, BLOCKED}
+enum JobType {REPAIR, SCAVENGE}
+
 var job_queue: Array[Dictionary] = [{
-	"type": "Repair",
+	"id": "job_001",
+	"type": JobType.REPAIR,
 	"location": Vector2i(686,80), # make sure you fill this in with the real zone
 	"duration": 2.0, # <-- add required work time (in seconds)
+	"status": JobStatus.AVAILABLE,
+	"assigned_npc_id": null,
+	"progress": 0 
 	#"cost": {ScrapMetal: 1} <-- however many resources it costs to do this 
-},{
-	"type": "Scavenging",
-	"location": Vector2i(220,409), # make sure you fill this in with the real zone
-	"duration": 10.0, # <-- add required work time (in seconds)
-	#"cost": null <-- however many resources it costs to do this 
 	#"reward": {} Is there a reward? How much will they *get* for scavenging? They can add this to their inventory
+	
 }]
 ## End main game state variables
+
+func get_job_by_id(id: String) -> Variant:
+	for job in job_queue:
+		if job.id == id:
+			return job
+		else:
+			return "No matching job found"
+	return "ugh idk"
 
 # Signals
 signal job_selected # fired from the job screen UI
