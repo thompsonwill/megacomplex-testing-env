@@ -16,19 +16,22 @@ var stockpile_1_inventory = [{
 # End stockpile testing
 
 
-func check_stockpile_for_item(item_type: SimulationManager.ResourceType) -> void:
+func get_stockpile_location(stockpile) -> Variant:
+	return stockpile
+
+func check_stockpile_for_item(item_type: SimulationManager.ResourceType) -> Dictionary:
 	# Harcoding stockpile array because we're looking for shit in there
 	for stockpile in buildings_by_type['Stockpile']:
 		if stockpile.inventory.size() > 0:
 			for item in stockpile.inventory:
 				if item.type == item_type:
-					print("Item located, sickem boys")
-					print(item)
+					return {"success": true, "stockpile": stockpile}
 				else:
-					print("Doesn't seem to be one of those items laying around.")
+					return {"success": false}
 		else:
 			print("Inventory is completely empty, champ")
-	pass
+			return {"success": false}
+	return {"success": false}
 	
 func register_building(type: String, position: Vector2i, area: Rect2, node: PackedScene ) -> void:
 	# Check if the building type exists in our dictionary, if it does, add it to the list

@@ -31,6 +31,9 @@ var health: int = 100
 var is_working: bool = false
 var target_position
 var STOPPING_DISTANCE: int = 25
+var current_action_purpose: String = "JOB" # Can be JOB, PICKUP, or DROP_OFF
+var required_pickup_item: Dictionary = {}
+var item_resource
 ## End player state vars
 
 # Do we still need this?  
@@ -42,18 +45,22 @@ var STOPPING_DISTANCE: int = 25
 		
 # Used if there is a cost to the job we want to take.
 # Returns true if we have it in our inventory, false if we do not.
-func check_inventory_for_item(item_to_check: Dictionary) -> Variant:
-	print(item_to_check)
-	for item in inventory: # loop through our inventory to check if we have what we need
-		if item_to_check.resource == item.type: # if required resrouce type == the item in our inventory type...
-			return true
-		else:
-			print("You ain't got this one, pal.")
-			return false
-	return
 
+# Corrected: Checks all inventory items and checks the count
+func check_inventory_for_item(item_to_check: Dictionary) -> bool: # Explicitly return bool
+	var required_resource = item_to_check.resource
+	var required_count = item_to_check.count
+	
+	for item in inventory:
+		# Check if the resource type matches AND the count is sufficient
+		if item_resource == item.type and item.count >= required_count:
+			return true # We have enough!
+	
+	print("You ain't got the required %d of resource %s, pal." % [required_count, required_resource])
+	return false # Only return false after checking ALL inventory entries.
 
-
+func pickup_item(item) -> void:
+	pass
 
 # Function to let NPC claim a job
 # Need to clean up the code that actually sets the job details (current_job, is_working, target_position)
@@ -69,6 +76,7 @@ func _claim_new_job(job_data) -> void:
 				current_job = job_data
 				is_working = false # make sure we stop working when we move to the job location
 				target_position = job_data.location
+				current_action_purpose = "JOB"
 			else:
 				# Next step is to go looking for the resource in the stockpile. 
 				# First, add the job_data to our queued_job array
@@ -76,8 +84,19 @@ func _claim_new_job(job_data) -> void:
 				# Move to that stockpile, pick up item
 				# Update inventory in stockpile & NPC inventory
 				# Check queued jobs, take the one on the list that we can pay for now 
+				print("Adding job to NPC job queue")
+				queued_jobs.append(job_data)
+				print(queued_jobs)
 				print("We're looking for a stockpile")
-				BuildingManager.check_stockpile_for_item(item.resource)
+				if BuildingManager.check_stockpile_for_item(item.resource).success:
+					print("stockpile located")
+					var stockpile_info = BuildingManager.check_stockpile_for_item(item.resource).stockpile
+					required_pickup_item = item
+					current_action_purpose = "PICKUP"
+					target_position = stockpile_info.position
+					is_working = false
+					return
+					
 				
 	else: # this job is free to complete. So generous of our capitalist overlords. 
 		print("No cost to this job")
@@ -124,9 +143,25 @@ func _physics_process(delta: float) -> void:
 		if distance < STOPPING_DISTANCE:
 			velocity = Vector2.ZERO
 			target_position = null
+			
 			print("Arrived at target location.")
-			is_working = true
-			print("NPC is now beginning work.")
+			
+			match current_action_purpose:
+				"JOB":
+					# Landed at job site
+					if current_job:
+						is_working = true
+						print("Npc is now beginning work")
+				"PICKUP":
+					# Landed at stockpile to pick up the item
+					_execute_stockpile_pickup()
+				"DROP_OFF":
+					pass # do this l8r sk8r
+				_:
+					print("Arrived at target with unknown purpose. RIP")
+			
+			# Player should only start_working if they land on a job area
+
 		else:
 			var direction = global_position.direction_to(target_position)
 			velocity = direction * SPEED
@@ -135,7 +170,40 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 	move_and_slide()
 
-
+func _execute_stockpile_pickup() -> void:
+	print("_execute_stockpile_pickup")
+	print(required_pickup_item)
+	item_resource = required_pickup_item.resource
+	var item_count = required_pickup_item.count
+	
+	var found = false
+	for item in inventory: # If there's already an item type in the inventory
+		print("Item ", item)
+		if item.type == item_resource:
+			item.count += item_count
+			found = true
+			break
+	if not found: # If we don't have one, pick er up
+		inventory.append({
+			"type": item_resource,
+			"name": "Scrap Metal",
+			"count": item_count
+		})
+	print("Successfully picked up %d of %s. Inventory: %s" % [item_count, item_resource, inventory])
+	
+	# Clear the variables we cooked up for this
+	required_pickup_item = {}
+	current_action_purpose = "JOB" # Let's reset our purpose and kick off our queued job
+	
+	if not queued_jobs.is_empty():
+		# Re-claims the first job, which should now pass the inventory check
+		var next_job = queued_jobs.pop_front() # Remove from queue
+		# call the original claim function to send the NPC to the right spot
+		_claim_new_job(next_job)
+	else:
+		# No job waiting, this guy is a BUM!
+		print("pickup complete, not queued jobs. Dude is hanging out. ")
+	pass
 # Show the citizen's details UI
 func _on_mouse_collider_mouse_entered() -> void:
 	#print("inventory")

@@ -7,7 +7,7 @@ var resource_inventory: Dictionary = {} # ScrapMetal, WiringSpools, ProcessedDat
 
 # Global Enum Definitions
 enum JobStatus {AVAILABLE, CLAIMED, IN_PROGRESS, BLOCKED}
-enum JobType {REPAIR, SCAVENGE}
+enum JobType {REPAIR, SCAVENGE, GET_RESOURCE}
 ## Resource Enums
 enum ResourceType {CONSUMABLE, SCRAP_METAL}
 
@@ -21,7 +21,6 @@ var job_queue: Array[Dictionary] = [{
 	"progress": 0, 
 	"cost": [{"resource": ResourceType.SCRAP_METAL, "count": 1}] # <-- however many resources it costs to do this 
 	#"reward": {} Is there a reward? How much will they *get* for scavenging? They can add this to their inventory
-	
 }]
 ## End main game state variables
 
@@ -30,7 +29,7 @@ var job_queue: Array[Dictionary] = [{
 # Signals
 signal job_selected # fired from the job screen UI
 signal job_completed(index: int) # ensure we can update the jobs array when the job is done
-
+signal look_for_item(item)
 
 
 # Helper function to get job data
