@@ -19,8 +19,13 @@ var full_profile: String
 # End player UI variables
 
 ## Player State Variables
-var inventory: Array
+var inventory: Array = [{
+	"type": SimulationManager.ResourceType.CONSUMABLE,
+	"name": "Beer",
+	"count": 2,
+}]
 var current_job: Dictionary = {}
+var queued_jobs: Array = []
 var job_progress: float = 0.0 # Time spent on current task
 var health: int = 100
 var is_working: bool = false
@@ -28,39 +33,61 @@ var target_position
 var STOPPING_DISTANCE: int = 25
 ## End player state vars
 
-func find_entry_by_id(array, target_id):
-	for entry in array:
-		if entry.has("id") and entry["id"] == target_id:
-			return entry
-		return null # Return null if no entry with the target_id is found
+# Do we still need this?  
+#func find_entry_by_id(array, target_id):
+	#for entry in array:
+		#if entry.has("id") and entry["id"] == target_id:
+			#return entry
+		#return null # Return null if no entry with the target_id is found
+		
+# Used if there is a cost to the job we want to take.
+# Returns true if we have it in our inventory, false if we do not.
+func check_inventory_for_item(item_to_check: Dictionary) -> Variant:
+	print(item_to_check)
+	for item in inventory: # loop through our inventory to check if we have what we need
+		if item_to_check.resource == item.type: # if required resrouce type == the item in our inventory type...
+			return true
+		else:
+			print("You ain't got this one, pal.")
+			return false
+	return
+
+
+
 
 # Function to let NPC claim a job
+# Need to clean up the code that actually sets the job details (current_job, is_working, target_position)
+# We repeat that in a few places.
 func _claim_new_job(job_data) -> void:
-	print("Pritning from Colony_Citizen.gd")
 	print(job_data)
-	if job_data.cost:
-		print("There is a cost to this job, do we have the resource in our inventory?")
-		print(SimulationManager.ResourceType.keys()[job_data.cost.resource]) # What material type?
-		
-		# Check if we have the resources required in our inventory
-		# If yes, proceed to do the work
-		# If no, find a stockpile that has the resource
-		
-		if inventory.size() == 0:
-			# There is no inventory, we do not have enough of anything.
-			# If the inventory is empty, we should locate these resources
-			print("You poor, there's nothing here.")
+	
+	if job_data.cost.size() > 0:
+		for item in job_data.cost:
+			# Check if we have the item in our inventory
+			if check_inventory_for_item(item):
+				print("we got this one! Let's goooo")
+				current_job = job_data
+				is_working = false # make sure we stop working when we move to the job location
+				target_position = job_data.location
+			else:
+				# Next step is to go looking for the resource in the stockpile. 
+				# First, add the job_data to our queued_job array
+				# Then look for the stockpile with whatever we need
+				# Move to that stockpile, pick up item
+				# Update inventory in stockpile & NPC inventory
+				# Check queued jobs, take the one on the list that we can pay for now 
+				print("We're looking for a stockpile")
+				BuildingManager.check_stockpile_for_item(item.resource)
+				
+	else: # this job is free to complete. So generous of our capitalist overlords. 
+		print("No cost to this job")
+		if is_working:
+			print("This guy is already working")
+			return
+		current_job = job_data
+		is_working = false # make sure we stop working when we move to the job location
+		target_position = job_data.location
 
-	if is_working:
-		print("This guy is already working")
-		return
-	current_job = job_data
-	is_working = false # make sure we stop working when we move to the job location
-	target_position = job_data.location
-
-
-
-	pass
 
 func _ready() -> void:
 	SimulationManager.job_selected.connect(_claim_new_job)

@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 SimulationManager="*res://Colony_Sim_Basics/Scripts/State/SimulationManager.gd"
+BuildingManager="*res://Colony_Sim_Basics/Scripts/State/BuildingManager.gd"
 
 [display]
 

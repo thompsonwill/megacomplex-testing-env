@@ -19,20 +19,13 @@ var job_queue: Array[Dictionary] = [{
 	"status": JobStatus.AVAILABLE,
 	"assigned_npc_id": null,
 	"progress": 0, 
-	"cost": {"resource": ResourceType.SCRAP_METAL, "count": 1} # <-- however many resources it costs to do this 
+	"cost": [{"resource": ResourceType.SCRAP_METAL, "count": 1}] # <-- however many resources it costs to do this 
 	#"reward": {} Is there a reward? How much will they *get* for scavenging? They can add this to their inventory
 	
 }]
 ## End main game state variables
 
-# Maybe this should get moved later, figure it out
-var stockpile_1_inventory = [{
-	"type": ResourceType.SCRAP_METAL,
-	"name": "Scrap Metal",
-	"count": 10,
-	"location": "Stockpile_1"
-}]
-# End stockpile testing
+
 
 # Signals
 signal job_selected # fired from the job screen UI

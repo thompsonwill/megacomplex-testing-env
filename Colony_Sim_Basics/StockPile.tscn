@@ -1,10 +1,11 @@
 [gd_scene load_steps=3 format=4 uid="uid://dlr4dx0r0ae5l"]
 
-[ext_resource type="Script" uid="uid://b8rk887qlas4m" path="res://Colony_Sim_Basics/Scripts/StockPile.gd" id="1_6jfb0"]
+[ext_resource type="Script" uid="uid://b8rk887qlas4m" path="res://Colony_Sim_Basics/Scripts/Stockpile.gd" id="1_6jfb0"]
 [ext_resource type="TileSet" uid="uid://b3d4xj4b331dx" path="res://Global_Assets/ASCII_Tileset.tres" id="1_ahb3n"]
 
-[node name="StockPile" type="Node2D" node_paths=PackedStringArray("inventory_label")]
+[node name="StockPile" type="Node2D" node_paths=PackedStringArray("tiles", "inventory_label")]
 script = ExtResource("1_6jfb0")
+tiles = NodePath("TileMapLayer")
 inventory_label = NodePath("Inventory_Label")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
